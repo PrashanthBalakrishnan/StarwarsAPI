@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-const CharacterView = ({ character = {} }) => {
+import endpoint from './endpoint';
+
+const CharacterView = ({ match }) => {
+  const [character, setCharacter] = useState({});
+
+  const routeParams = useParams();
+  useEffect(() => {
+    fetch(endpoint + '/characters/' + routeParams.id)
+      .then((response) => response.json())
+      .then((response) => setCharacter(response.character));
+  }, [routeParams.id]);
   console.log(character);
+
   return (
     <section className="CharacterView">
       <h2>{character.name}</h2>
